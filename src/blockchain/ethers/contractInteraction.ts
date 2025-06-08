@@ -183,14 +183,20 @@ export const resolveBet = async (
   console.log(`解决投注合约: ${betContractAddress}`);
   console.log(`设置获胜选项: ${winnerOptionIndex}`);
   
-  const tx = await betContract.resolveBet(winnerOptionIndex);
-  console.log(`解决投注交易哈希: ${tx.hash}`);
-  console.log('等待交易确认...');
-  
-  const receipt = await tx.wait();
-  console.log('投注已成功解决！');
-  
-  return receipt.transactionHash;
+  try {
+    // 添加gas限制以避免估算问题
+    const tx = await betContract.resolveBet(winnerOptionIndex, { gasLimit: 300000 });
+    console.log(`解决投注交易哈希: ${tx.hash}`);
+    console.log('等待交易确认...');
+    
+    const receipt = await tx.wait();
+    console.log('投注已成功解决！');
+    
+    return receipt.transactionHash;
+  } catch (error) {
+    console.error('解决投注失败：', error instanceof Error ? error.message : String(error));
+    throw new Error(`解决投注失败: ${error instanceof Error ? error.message : String(error)}`);
+  }
 };
 
 /**

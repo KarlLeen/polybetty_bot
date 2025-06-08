@@ -1,6 +1,7 @@
 import { Bot } from 'grammy';
 import { config } from '../shared/config';
 import { registerCommands } from './commands';
+import { registerCallbackHandlers } from './handlers/callbackHandlers';
 
 /**
  * 启动Telegram机器人
@@ -17,6 +18,9 @@ const startBot = async () => {
 
   // 注册所有命令
   registerCommands(bot);
+  
+  // 注册内联键盘回调处理程序
+  registerCallbackHandlers(bot);
 
   // 错误处理
   bot.catch((err) => {

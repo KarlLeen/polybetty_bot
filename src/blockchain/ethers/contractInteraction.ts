@@ -53,12 +53,19 @@ export const getProviderAndSigner = () => {
 };
 
 /**
- * 部署Sidebet合约
+ * 部署Sidebet合约或使用现有合约
  */
 export const deploySidebetContract = async (
   title: string, 
-  options: string[]
+  options: string[],
+  useExistingContract: boolean = true
 ): Promise<string> => {
+  // 如果配置了合约地址且使用现有合约，则直接返回
+  if (useExistingContract && config.blockchain.sidebetContractAddress) {
+    console.log(`使用现有Sidebet合约: ${config.blockchain.sidebetContractAddress}`);
+    return config.blockchain.sidebetContractAddress;
+  }
+  
   const { signer } = getProviderAndSigner();
   
   // 检查是否有字节码和ABI
@@ -72,7 +79,7 @@ export const deploySidebetContract = async (
     signer
   );
   
-  console.log('开始部署Sidebet合约到Monad测试网...');
+  console.log('开始部署新的Sidebet合约到Monad测试网...');
   console.log(`标题: ${title}, 选项数量: ${options.length}`);
   console.log(`USDC地址: ${config.blockchain.usdcContractAddress}`);
   
@@ -90,6 +97,20 @@ export const deploySidebetContract = async (
   
   console.log(`Sidebet合约已部署至: ${contract.address}`);
   return contract.address;
+};
+
+/**
+ * 获取已部署的Sidebet合约实例
+ */
+export const getSidebetContract = () => {
+  const { signer } = getProviderAndSigner();
+  const contractAddress = config.blockchain.sidebetContractAddress;
+  
+  if (!contractAddress) {
+    throw new Error('Sidebet合约地址未配置');
+  }
+  
+  return new ethers.Contract(contractAddress, SidebetABI, signer);
 };
 
 /**

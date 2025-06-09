@@ -1,0 +1,12 @@
+{
+  "network": "Monad测试网",
+  "contractAddress": "0x3f9205A61a09a04F71b23f7Ca79234c3BF6F9a43",
+  "deploymentTime": "2025-06-09T15:12:45.018Z",
+  "transactionHash": "0x25cf7fcb0f7f78e8a5e18ec4e358aaa4d6954f0f3cbb17e634ac1197de9e114d",
+  "title": "Monad测试投注",
+  "options": [
+    "选项A",
+    "选项B"
+  ],
+  "usdcAddress": "0x3D2747e4D6F0Fe22cf3E6A336acca74bEed9abc5"
+}
